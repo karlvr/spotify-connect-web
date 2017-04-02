@@ -7,6 +7,7 @@ from threading import Thread
 import threading
 from connect_ffi import ffi, lib
 from lastfm import lastfm
+import math
 
 
 RATE = 44100
@@ -257,6 +258,7 @@ def playback_volume(self, volume):
             mixer.setmute(0)
             print "Mute deactivated"
         corected_playback_volume = int(min_volume_range + ((volume / 655.35) * (100 - min_volume_range) / 100))
+        corected_playback_volume = int(100 * math.pow(corected_playback_volume / 100.0, 1.0 / 3.0))
         print "corected_playback_volume: {}".format(corected_playback_volume)
         mixer.setvolume(corected_playback_volume)
 

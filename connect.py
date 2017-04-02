@@ -9,6 +9,7 @@ from connect_ffi import ffi, lib, C
 from console_callbacks import audio_arg_parser, mixer, error_callback, connection_callbacks, debug_callbacks, playback_callbacks, playback_setup
 from lastfm import lastfm_arg_parser
 from utils import print_zeroconf_vars
+import math
 
 class Connect:
     def __init__(self, error_cb = error_callback, web_arg_parser = None):
@@ -87,7 +88,7 @@ class Connect:
         lib.SpRegisterConnectionCallbacks(connection_callbacks, userdata)
         lib.SpRegisterPlaybackCallbacks(playback_callbacks, userdata)
 
-        mixer_volume = int(mixer.getvolume()[0] * 655.35)
+        mixer_volume = int(math.pow(mixer.getvolume()[0] / 100.0, 3) * 65535)
         lib.SpPlaybackUpdateVolume(mixer_volume)
 
         bitrates = {
